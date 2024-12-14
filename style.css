@@ -111,3 +111,134 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Here is another style:
+
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: #333;
+}
+
+input, select, button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Sign Up and Login Pages */
+#signup-page, #login-page {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-container, .login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#go-to-login {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#go-to-login:hover {
+  color: #0056b3;
+}
+
+/* Main App Content */
+#app-content {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-section, .expenses-list, .main-content {
+  margin-bottom: 20px;
+}
+
+.input-section label {
+  font-weight: bold;
+}
+
+.expenses-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.expenses-list th, .expenses-list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.expenses-list th {
+  background-color: #f2f2f2;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* Chart and Report */
+.chart-container, .report-container {
+  margin-top: 20px;
+}
+
+.chart-buttons button {
+  margin-right: 10px;
+}
+
+#expenseChart {
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+#spending-report {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
