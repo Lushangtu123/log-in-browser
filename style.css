@@ -1,198 +1,121 @@
-.forgot-password-container, .create-account-container {
-  background-color: white;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  margin: 0 auto;
+/* Global Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-form {
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #74ABE2, #5563DE);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Containers for Signup, Login, and App Content */
+#signup-page, 
+#login-page{
+  width: 50%;
+  max-width: 500px;
+  margin: 6rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+#app-content {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #5563DE;
+}
+
+/* Form Containers */
+.signup-container, 
+.login-container {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* Labels and Inputs */
+label {
+  font-size: 0.9rem;
+  color: #555;
 }
 
-.input-container {
-  margin-bottom: 15px;
+input, 
+select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-input:focus {
-  border-color: #4a90e2;
+input:focus, 
+select:focus {
+  border-color: #5563DE;
   outline: none;
 }
 
-.submit-button {
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.submit-button:hover {
-  background-color: #357ab7;
-}
-
-.back-to-login {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.login-link {
-  color: #4a90e2;
-  text-decoration: none;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-align: center;
-  background-color: #f4f4f9;
-}
-
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-.expense-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-}
-
-.expense-item:last-child {
-  border-bottom: none;
-}
-
-.limit-message {
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
+/* Buttons */
 button {
-  margin: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  padding: 0.75rem;
+  background-color: #5563DE;
   border: none;
   border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #3f4bb8;
 }
 
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Here is another style:
-
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-}
-
-h1, h2, h3 {
-  color: #333;
-}
-
-input, select, button {
-  display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
+/* Error Messages */
 .error-message {
-  color: red;
-  margin-top: 10px;
+  color: #E74C3C;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-/* Sign Up and Login Pages */
-#signup-page, #login-page {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.signup-container, .login-container {
+/* Input Section (Expense Entry and Spending Limit) */
+.input-section {
   display: flex;
-  flex-direction: column;
-}
-
-#go-to-login {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-#go-to-login:hover {
-  color: #0056b3;
-}
-
-/* Main App Content */
-#app-content {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.input-section, .expenses-list, .main-content {
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .input-section label {
-  font-weight: bold;
+  flex: 1 1 100%;
+}
+
+.input-section input, 
+.input-section select {
+  flex: 1 1 calc(50% - 1rem);
+}
+
+/* Expenses List Table */
+.expenses-list {
+  overflow-x: auto;
+  margin: 1rem 0;
 }
 
 .expenses-list table {
@@ -200,45 +123,99 @@ button:hover {
   border-collapse: collapse;
 }
 
-.expenses-list th, .expenses-list td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.expenses-list th, 
+.expenses-list td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
   text-align: left;
 }
 
 .expenses-list th {
-  background-color: #f2f2f2;
+  background-color: #5563DE;
+  color: #fff;
 }
 
+/* Delete Button in Table */
 .delete-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: #E74C3C;
   border: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
-  padding: 5px 10px;
+  transition: background-color 0.3s ease;
 }
 
 .delete-btn:hover {
-  background-color: #c82333;
+  background-color: #c0392b;
 }
 
-/* Chart and Report */
-.chart-container, .report-container {
-  margin-top: 20px;
+/* Main Content for Chart and Report (STACKED LAYOUT) */
+.main-content {
+  display: flex;
+  flex-direction: column; /* Always stacked, chart on top, report below */
+  gap: 2rem;             /* Space between chart and report sections */
 }
 
-.chart-buttons button {
-  margin-right: 10px;
+/* Chart and Report Containers */
+.chart-container, 
+.report-container {
+  background: #f9f9f9;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
 }
 
-#expenseChart {
-  margin-top: 20px;
+/* Chart Buttons */
+.chart-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Toggle Link for Signup/Login */
+#signup-page p, 
+#login-page p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#signup-page p button, 
+#login-page p button {
+  background: none;
+  color: #5563DE;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+#signup-page p button:hover, 
+#login-page p button:hover {
+  color: #3f4bb8;
+}
+
+/* Canvas for Charts */
+canvas {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 100% !important;
   max-width: 100%;
+  height: auto !important;
 }
 
-#spending-report {
-  margin-top: 20px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
+/* OPTIONAL: Remove or keep the media query if you want a different layout on larger screens.
+   In this example, we keep them stacked even on larger screens. 
+   You can remove this entire block if you don't need any special styling for bigger screens. */
+@media (min-width: 768px) {
+  .main-content {
+    /* Keep them stacked on large screens too */
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
+
