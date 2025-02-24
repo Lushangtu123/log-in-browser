@@ -25,7 +25,6 @@
     </div>
     <p>Already have an account? <button id="go-to-login">Login Here</button></p>
   </div>
-
   <div id="login-page">
     <h1>Login to Expense Tracker</h1>
     <div class="login-container">
@@ -36,9 +35,8 @@
       <button id="login-btn">Login</button>
       <div id="login-error" class="error-message"></div>
     </div>
-    <p>Don't have a account? <button id="go-to-signup">Sign up here</button></p>
+    <p>Don't have an account? <button id="go-to-signup">Sign up here</button></p>
   </div>
-
   <div id="app-content" style="display: none;">
     <h1>ACG College Expense Tracker</h1>
     <div class="input-section">
@@ -81,24 +79,15 @@
       </table>
     </div>
     <div class="input-section">
-      <button id=""view-history-btn">View History</button>
+      <button id="show-history-btn">Show History</button>
+      <div id="history-section" style="display:none;">
+        <h2>History Log</h2>
+        <ul id="history-list"></ul>
+      </div>
       <label for="spending-limit-input">Spending Limit:</label>
       <input type="number" id="spending-limit-input" placeholder="Enter spending limit" />
       <button id="update-limit-btn">Update Limit</button>
     </div>
-    <div id=""history-log" style="display:none;">
-      <h2>History Log</h2>
-      <ul id=""history-list></ul>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody id="history-table-body"></tbody>
-      </table>
     <div class="main-content">
       <div class="chart-container">
         <h2>Expense Summary Chart</h2>
@@ -117,21 +106,20 @@
     </div>
   </div>
   <!-- Chatbot Container -->
-<div class="chat-container collapsed" id="chat-container">
-  <div class="chat-toggle" id="chat-toggle">
-    <span>💬</span>
-  </div>
-  <div class="chat-content">
-    <div class="chat-box" id="chat-box">
-      <!-- Chat messages will appear here -->
+  <div class="chat-container collapsed" id="chat-container">
+    <div class="chat-toggle" id="chat-toggle">
+      <span>💬</span>
     </div>
-    <div class="input-container">
-      <input type="text" id="user-input" placeholder="Type your message...">
-      <button onclick="sendMessage()">Send</button>
+    <div class="chat-content">
+      <div class="chat-box" id="chat-box">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
     </div>
   </div>
-</div>
   <script src="script.js"></script>
 </body>
 </html>
-
