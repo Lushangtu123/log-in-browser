@@ -17,7 +17,7 @@ body {
 
 /* Containers for Signup, Login, and App Content */
 #signup-page, 
-#login-page{
+#login-page {
   width: 50%;
   max-width: 500px;
   margin: 6rem auto;
@@ -26,6 +26,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
 #app-content {
   width: 90%;
   max-width: 800px;
@@ -208,14 +209,117 @@ canvas {
   height: auto !important;
 }
 
-/* OPTIONAL: Remove or keep the media query if you want a different layout on larger screens.
-   In this example, we keep them stacked even on larger screens. 
-   You can remove this entire block if you don't need any special styling for bigger screens. */
+#history-log {
+  margin-top: 1rem;
+}
+
+#history-list {
+  list-style-type: disc;
+  padding-left: 1rem;
+}
+
+/* Chatbot Styles */
+.chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.chat-container.collapsed {
+  width: 60px;
+  height: 60px;
+}
+
+.chat-container.collapsed .chat-content {
+  display: none;
+}
+
+.chat-toggle {
+  width: 100%;
+  height: 100%;
+  background-color: #5563DE;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 8px;
+}
+
+.chat-toggle:hover {
+  background-color: #3f4bb8;
+}
+
+.chat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.chat-box .message {
+  margin: 10px 0;
+}
+
+.chat-box .user {
+  text-align: right;
+  color: #007bff;
+}
+
+.chat-box .bot {
+  text-align: left;
+  color: #333;
+}
+
+.input-container {
+  display: flex;
+  padding: 10px;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.input-container input:focus {
+  border-color: #5563DE;
+}
+
+.input-container button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color: #5563DE;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-container button:hover {
+  background-color: #3f4bb8;
+}
+
+/* Media Query (Optional) */
 @media (min-width: 768px) {
   .main-content {
-    /* Keep them stacked on large screens too */
     flex-direction: column;
     gap: 2rem;
   }
 }
-
