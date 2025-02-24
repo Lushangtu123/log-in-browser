@@ -1,3 +1,78 @@
+// ==============================
+// Chatbot Functionality
+// ==============================
+const apiKey = 'API Key'; // 替换为你的 SiliconFlow API 密钥
+const apiUrl = 'https://api.siliconflow.cn/v1/chat/completions'; // SiliconFlow API 端点
+
+function appendMessage(sender, message) {
+  const chatBox = document.getElementById('chat-box');
+  const messageElement = document.createElement('div');
+  messageElement.classList.add('message', sender);
+  messageElement.textContent = message;
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部
+}
+
+async function sendMessage() {
+  const userInput = document.getElementById('user-input');
+  const userMessage = userInput.value.trim();
+  if (!userMessage) return;
+
+  // 将用户消息添加到聊天框
+  appendMessage('user', userMessage);
+
+  // 清空输入框
+  userInput.value = '';
+
+  try {
+    // 发送请求到 SiliconFlow API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "Qwen/Qwen2.5-7B-Instruct", // 使用 Qwen 模型
+        messages: [{ role: "user", content: userMessage }],
+        stream: false,
+        max_tokens: 512,
+        temperature: 0.7,
+        top_p: 0.7,
+        top_k: 50,
+        frequency_penalty: 0.5,
+        n: 1
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const botMessage = data.choices[0]?.message?.content || '无法获取响应';
+
+    // 将机器人的响应添加到聊天框
+    appendMessage('bot', botMessage);
+  } catch (error) {
+    console.error('Error:', error);
+    console.error('Response:', error.response ? error.response.data : 'No response data');
+    appendMessage('bot', '抱歉，处理您的请求时发生了错误。');
+  }
+}
+
+// 切换聊天窗口的展开/收起状态
+const chatContainer = document.getElementById('chat-container');
+const chatToggle = document.getElementById('chat-toggle');
+
+chatToggle.addEventListener('click', () => {
+  chatContainer.classList.toggle('collapsed');
+});
+
+// ==============================
+// Expense Tracking Functionality
+// ==============================
+
 // Initial Setup
 let expenses = [];
 let totalAmount = 0;
@@ -12,6 +87,13 @@ const appContent = document.getElementById('app-content');
 const signupError = document.getElementById('signup-error');
 const loginError = document.getElementById('login-error');
 const goToLoginBtn = document.getElementById('go-to-login');
+const goToSignupBtn = document.getElementById('go-to-signup');
+
+//Even listener to navigate to the signup page
+goToSignupBtn.addEventListener('click', function () {
+    loginPage.style.display = 'none';
+    signupPage.style.display = 'block';
+});
 
 // Event listener to navigate to the login page
 goToLoginBtn.addEventListener('click', function () {
