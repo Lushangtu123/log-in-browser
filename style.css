@@ -210,7 +210,40 @@ canvas {
 }
 
 #history-log {
-  margin-top: 1rem;
+  margin: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#history-log table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#history-log th, #history-log td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#history-log th {
+  background-color: #f5f5f5;
+}
+
+#view-history-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+#view-history-btn:hover {
+  background-color: #45a049;
 }
 
 #history-list {
