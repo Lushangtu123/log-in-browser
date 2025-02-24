@@ -77,6 +77,7 @@ chatToggle.addEventListener('click', () => {
 let expenses = [];
 let totalAmount = 0;
 let spendingLimit = Number(localStorage.getItem('spendingLimit')) || 1000; // Default limit
+let historyRecords = [];
 
 // Sign Up and Login Elements
 const signupBtn = document.getElementById('signup-btn');
@@ -89,7 +90,7 @@ const loginError = document.getElementById('login-error');
 const goToLoginBtn = document.getElementById('go-to-login');
 const goToSignupBtn = document.getElementById('go-to-signup');
 
-//Even listener to navigate to the signup page
+// Event listener to navigate to the signup page
 goToSignupBtn.addEventListener('click', function () {
     loginPage.style.display = 'none';
     signupPage.style.display = 'block';
@@ -208,49 +209,53 @@ function initializeExpenseTracking() {
             alert('Please enter a valid amount');
             return;
         }
-        if (date === '') {
-            alert('Please select a date');
-            return;
-        }
 
-        // Create a new expense object with a unique ID
-        const expense = { id: Date.now(), category, amount, date };
-        expenses.push(expense);
+        const newExpense = { id: Date.now(), category, amount, date };
+        expenses.push(newExpense);
 
-        // Update the total amount
+        // Update total amount
         totalAmount += amount;
         totalAmountCell.textContent = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-        // Add a new row to the expenses table
-        const newRow = expensesTableBody.insertRow();
+        // Add row to the table
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${category}</td>
+            <td>${amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
+            <td>${date}</td>
+            <td></td>
+        `;
+        expensesTableBody.appendChild(newRow);
 
-        const categoryCell = newRow.insertCell();
-        const amountCell = newRow.insertCell();
-        const dateCell = newRow.insertCell();
-        const deleteCell = newRow.insertCell();
-
-        categoryCell.textContent = expense.category;
-        amountCell.textContent = expense.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-        dateCell.textContent = expense.date;
-
-        // Create and append the delete button
+        // Add delete button to the row
+        const deleteCell = newRow.querySelector('td:last-child');
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete';
         deleteBtn.classList.add('delete-btn');
+
         deleteBtn.addEventListener('click', function () {
-            // Remove the expense from the array using the unique ID
-            expenses = expenses.filter(e => e.id !== expense.id);
+            const index = expenses.findIndex(expense => expense.id === newExpense.id);
+            if (index !== -1) {
+                expenses.splice(index, 1);
 
-            // Update the total amount
-            totalAmount -= expense.amount;
-            totalAmountCell.textContent = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                // Update the total amount
+                totalAmount -= newExpense.amount;
+                totalAmountCell.textContent = totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-            // Remove the row from the table
-            expensesTableBody.removeChild(newRow);
+                // Remove the row from the table
+                expensesTableBody.removeChild(newRow);
 
-            // Update the chart if visible
-            if (expenseChart) {
-                updateChart(expenseChart.config.type);
+                // Log the deletion in the history
+                historyRecords.push({
+                    action: 'delete',
+                    details: `Deleted expense: ${newExpense.category} - ${newExpense.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} on ${newExpense.date}`,
+                    timestamp: new Date()
+                });
+
+                // Update the chart if visible
+                if (expenseChart) {
+                    updateChart(expenseChart.config.type);
+                }
             }
         });
 
@@ -263,6 +268,13 @@ function initializeExpenseTracking() {
 
         // Check spending limit after adding a new expense
         checkSpendingLimit();
+
+        // Log the addition in the history
+        historyRecords.push({
+            action: 'add',
+            details: `Added expense: ${category} - ${amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} on ${date}`,
+            timestamp: new Date()
+        });
     });
 
     // Chart and Spending Report Event Listeners
@@ -273,6 +285,13 @@ function initializeExpenseTracking() {
         if (spendingReport.style.display === 'none' || spendingReport.style.display === '') {
             generateSpendingReport();
             spendingReport.style.display = 'block';
+
+            // Log the report generation in the history
+            historyRecords.push({
+                action: 'report',
+                details: `Generated spending report. Total Amount: ${totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`,
+                timestamp: new Date()
+            });
         } else {
             spendingReport.style.display = 'none';
         }
@@ -280,7 +299,7 @@ function initializeExpenseTracking() {
 
     // Function to generate the spending report
     function generateSpendingReport() {
-        let reportHtml = `<h3>Total Amount Spent: ${totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h3>`;
+        let reportHtml = `Total Amount Spent: ${totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
 
         if (expenses.length > 0) {
             const spendingByCategory = {};
@@ -291,22 +310,21 @@ function initializeExpenseTracking() {
                 spendingByCategory[expense.category] += expense.amount;
             });
 
-            reportHtml += '<h4>Spending by Category:</h4><ul>';
+            reportHtml += '<br>Spending by Category:<br>';
             for (const [category, amount] of Object.entries(spendingByCategory)) {
-                reportHtml += `<li>${category}: ${amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</li>`;
+                reportHtml += `${category}: ${amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}<br>`;
             }
-            reportHtml += '</ul>';
 
             const highestExpense = Math.max(...expenses.map(e => e.amount));
             const lowestExpense = Math.min(...expenses.map(e => e.amount));
             const averageExpense = totalAmount / expenses.length;
 
-            reportHtml += `<h4>Number of Expenses: ${expenses.length}</h4>`;
-            reportHtml += `<h4>Highest Expense: ${highestExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h4>`;
-            reportHtml += `<h4>Lowest Expense: ${lowestExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h4>`;
-            reportHtml += `<h4>Average Expense: ${averageExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h4>`;
+            reportHtml += `Number of Expenses: ${expenses.length}<br>`;
+            reportHtml += `Highest Expense: ${highestExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}<br>`;
+            reportHtml += `Lowest Expense: ${lowestExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}<br>`;
+            reportHtml += `Average Expense: ${averageExpense.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}<br>`;
         } else {
-            reportHtml += '<p>No expenses recorded yet.</p>';
+            reportHtml += 'No expenses recorded yet.';
         }
 
         spendingReport.innerHTML = reportHtml;
@@ -416,6 +434,30 @@ function initializeExpenseTracking() {
         }
 
         document.getElementById('expenseChart').style.display = 'block';
+    }
+
+    // Show/Hide History Section
+    const showHistoryBtn = document.getElementById('show-history-btn');
+    const historySection = document.getElementById('history-section');
+    const historyList = document.getElementById('history-list');
+
+    showHistoryBtn.addEventListener('click', function () {
+        if (historySection.style.display === 'none' || historySection.style.display === '') {
+            historySection.style.display = 'block';
+            displayHistory();
+        } else {
+            historySection.style.display = 'none';
+        }
+    });
+
+    function displayHistory() {
+        historyList.innerHTML = ''; // Clear previous history
+
+        historyRecords.forEach(record => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `[${record.timestamp.toLocaleString()}] ${record.action.toUpperCase()}: ${record.details}`;
+            historyList.appendChild(listItem);
+        });
     }
 
     // Initial check of spending limit after login
