@@ -5,3 +5,6 @@ Add history search near the view history button, it can search the history recor
 
 02/24/2025 Update:
 Add history record function, click view history button can see you add and delete data history
+
+02/19/2025 Update:
+Add Ai chatbox function in the lower left corner of the page. User can use it to search information.
