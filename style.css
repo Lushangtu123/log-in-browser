@@ -251,6 +251,33 @@ canvas {
   padding-left: 1rem;
 }
 
+.history-search {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.history-search input {
+  flex: 1;
+}
+
+.history-search button {
+  flex: 0 0 auto;
+}
+
+#clear-search-btn {
+  background-color: #888;
+}
+
+#clear-search-btn:hover {
+  background-color: #666;
+}
+
+.highlight {
+  background-color: #ffffcc;
+  font-weight: bold;
+}
+
 /* Chatbot Styles */
 .chat-container {
   position: fixed;
