@@ -1,7 +1,7 @@
 // ==============================
 // Chatbot Functionality
 // ==============================
-const apiKey = 'API Key'; // 替换为你的 SiliconFlow API 密钥
+const apiKey = 'You API Key'; // 替换为你的 SiliconFlow API 密钥
 const apiUrl = 'https://api.siliconflow.cn/v1/chat/completions'; // SiliconFlow API 端点
 
 function appendMessage(sender, message) {
@@ -441,6 +441,12 @@ function initializeExpenseTracking() {
     const historySection = document.getElementById('history-section');
     const historyList = document.getElementById('history-list');
 
+    // Add these new variables
+    const historySearchInput = document.getElementById('history-search-input');
+    const historySearchBtn = document.getElementById('history-search-btn');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    let filteredHistoryRecords = [];
+
     showHistoryBtn.addEventListener('click', function () {
         if (historySection.style.display === 'none' || historySection.style.display === '') {
             historySection.style.display = 'block';
@@ -450,16 +456,82 @@ function initializeExpenseTracking() {
         }
     });
 
-    function displayHistory() {
-        historyList.innerHTML = ''; // Clear previous history
+    // Search functionality
+    historySearchBtn.addEventListener('click', function() {
+        searchHistory();
+    });
 
-        historyRecords.forEach(record => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `[${record.timestamp.toLocaleString()}] ${record.action.toUpperCase()}: ${record.details}`;
-            historyList.appendChild(listItem);
-        });
+    // Clear search functionality
+    clearSearchBtn.addEventListener('click', function() {
+        historySearchInput.value = '';
+        filteredHistoryRecords = [];
+        displayHistory(); // Show all history items
+    });
+
+    // Allow pressing Enter to search
+    historySearchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchHistory();
+        }
+    });
+
+    function searchHistory() {
+        const searchTerm = historySearchInput.value.toLowerCase().trim();
+        
+        if (searchTerm === '') {
+            // If search term is empty, show all history
+            filteredHistoryRecords = [];
+            displayHistory();
+            return;
+        }
+        
+        // Filter history records based on search term
+        filteredHistoryRecords = historyRecords.filter(record => 
+            record.details.toLowerCase().includes(searchTerm) || 
+            record.action.toLowerCase().includes(searchTerm)
+        );
+        
+        displayHistory();
     }
-
-    // Initial check of spending limit after login
-    checkSpendingLimit();
-}
+    // Modified displayHistory function to handle search results
+function displayHistory() {
+    historyList.innerHTML = ''; // Clear previous history
+    
+    // Determine which array to display
+    const recordsToDisplay = filteredHistoryRecords.length > 0 ? 
+                            filteredHistoryRecords : 
+                            historyRecords;
+    
+    if (recordsToDisplay.length === 0) {
+        const listItem = document.createElement('li');
+        listItem.textContent = filteredHistoryRecords.length === 0 && historySearchInput.value !== '' ? 
+                              'No matching records found.' : 
+                              'No history records yet.';
+        historyList.appendChild(listItem);
+        return;
+    }
+    
+    const searchTerm = historySearchInput.value.toLowerCase().trim();
+    
+    recordsToDisplay.forEach(record => {
+        const listItem = document.createElement('li');
+        const timestamp = `[${record.timestamp.toLocaleString()}]`;
+        const action = `${record.action.toUpperCase()}:`;
+        
+        // Create the list item content
+        let content = `${timestamp} ${action} ${record.details}`;
+        
+        // If we have a search term, highlight it
+        if (searchTerm !== '') {
+            const regex = new RegExp(searchTerm, 'gi');
+            content = content.replace(regex, match => `<span class="highlight">${match}</span>`);
+            listItem.innerHTML = content;
+        } else {
+            listItem.textContent = content;
+        }
+        
+        historyList.appendChild(listItem);
+    });
+    } // End of displayHistory function
+    checkSpendingLimit
+} // End of initializeExpenseTracking function
