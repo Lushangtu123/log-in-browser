@@ -1,65 +1,91 @@
 // ==============================
 // Chatbot Functionality
 // ==============================
-const apiKey = 'You API Key'; // 替换为你的 SiliconFlow API 密钥
-const apiUrl = 'https://api.siliconflow.cn/v1/chat/completions'; // SiliconFlow API 端点
-
 function appendMessage(sender, message) {
-  const chatBox = document.getElementById('chat-box');
-  const messageElement = document.createElement('div');
-  messageElement.classList.add('message', sender);
-  messageElement.textContent = message;
-  chatBox.appendChild(messageElement);
-  chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部
-}
+    const chatBox = document.getElementById('chat-box');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', sender);
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部
+  }
 
 async function sendMessage() {
-  const userInput = document.getElementById('user-input');
-  const userMessage = userInput.value.trim();
-  if (!userMessage) return;
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
+    const message = userInput.value.trim();
 
-  // 将用户消息添加到聊天框
-  appendMessage('user', userMessage);
-
-  // 清空输入框
-  userInput.value = '';
-
-  try {
-    // 发送请求到 SiliconFlow API
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: "Qwen/Qwen2.5-7B-Instruct", // 使用 Qwen 模型
-        messages: [{ role: "user", content: userMessage }],
-        stream: false,
-        max_tokens: 512,
-        temperature: 0.7,
-        top_p: 0.7,
-        top_k: 50,
-        frequency_penalty: 0.5,
-        n: 1
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    if (message !== '') {
+        // Add user message to chat
+        appendMessage('user', message);
+        
+        try {
+            // Show loading indicator
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message bot-message';
+            loadingMessage.textContent = 'Thinking...';
+            chatBox.appendChild(loadingMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Send request to our server (updated port)
+            const response = await fetch('http://localhost:3001/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Remove loading message
+            chatBox.removeChild(loadingMessage);
+            
+            // Display bot response
+            if (data.choices && data.choices.length > 0) {
+                appendMessage('bot', data.choices[0].message.content);
+            } else {
+                appendMessage('bot', 'I received your message but couldn\'t generate a proper response.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            
+            // Find and remove the loading message if it exists
+            const loadingMessages = chatBox.querySelectorAll('.message.bot-message');
+            for (const msg of loadingMessages) {
+                if (msg.textContent === 'Thinking...') {
+                    chatBox.removeChild(msg);
+                    break;
+                }
+            }
+            
+            appendMessage('bot', 'Sorry, there was an error connecting to the server. Please make sure the server is running at http://localhost:3001');
+        }
+        
+        // Clear input
+        userInput.value = '';
     }
-
-    const data = await response.json();
-    const botMessage = data.choices[0]?.message?.content || '无法获取响应';
-
-    // 将机器人的响应添加到聊天框
-    appendMessage('bot', botMessage);
-  } catch (error) {
-    console.error('Error:', error);
-    console.error('Response:', error.response ? error.response.data : 'No response data');
-    appendMessage('bot', '抱歉，处理您的请求时发生了错误。');
-  }
 }
+
+function appendMessage(sender, text) {
+    const chatBox = document.getElementById('chat-box');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}-message`;
+    messageDiv.textContent = text;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // 滚动到底部
+}
+
+// Add event listener for Enter key
+document.getElementById('user-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
 
 // 切换聊天窗口的展开/收起状态
 const chatContainer = document.getElementById('chat-container');
@@ -535,3 +561,4 @@ function displayHistory() {
     } // End of displayHistory function
     checkSpendingLimit
 } // End of initializeExpenseTracking function
+
